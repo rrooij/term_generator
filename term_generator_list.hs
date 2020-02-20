@@ -2,8 +2,11 @@
 import Prelude
 import System.Environment
 
-generate_term :: Int -> String
-generate_term depth = concat (replicate depth "parent(") ++ "parent(robin, test)" ++ concat (replicate depth ")")
+multiplyString :: Int -> String -> String
+multiplyString depth = concat . replicate depth
+
+generateTerm :: Int -> String
+generateTerm depth = multiplyString depth "parent(" ++ "parent(robin, test)" ++ multiplyString depth ")"
 
 help program = "Usage: " ++ program ++ " [depth]"
 
@@ -11,8 +14,8 @@ main = do
   args <- getArgs
   case args of
     [depth] -> do
-      let depth_int = read depth :: Int
-      putStrLn $ (generate_term depth_int) ++ "."
+      let depthInt = read depth :: Int
+      putStrLn $ (generateTerm depthInt) ++ "."
     [] -> do
       progName <- getProgName
       putStrLn (help progName)
